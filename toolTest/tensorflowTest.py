@@ -1,0 +1,30 @@
+#-----------------------------------------------------
+# Editor:Chanyeol Liu    Date:2019/12/06
+# Code:CL191206
+# Purpose:tensorflow Test
+# https://www.bilibili.com/video/av16001891?p=9
+#-----------------------------------------------------
+import tensorflow as tf
+import numpy as np
+
+x_data = np.random.rand(100).astype(np.float32)
+y_data = x_data*0.1 + 0.3
+
+Weights = tf.Variable(tf.random.uniform([1], -1.0, 1.0))
+biases = tf.Variable(tf.zeros([1]))
+
+y = Weights*x_data + biases
+
+loss = tf.reduce_mean(tf.square(y - y_data))
+optimizer = tf.compat.v1.train.GradientDescentOptimizer(0.5)
+train = optimizer.minimize(loss)
+
+init = tf.initialize_all_variables()
+
+sess = tf.Session()
+sess.run(init)
+
+for step in range(201):
+    sess.run(train)
+    if step%20 == 0:
+        print(step,sess.run(Weights), sess.run(biases))
